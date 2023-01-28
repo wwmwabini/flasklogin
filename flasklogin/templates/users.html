@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content%}
+
+<section class="pb-5">
+  <div class="container p-5">
+    <h1 class="text-center">Users</h1>
+
+    <table class="table">
+
+    <thead>
+        <tr>
+          <th scope="col">Unique ID</th>
+          <th scope="col">Email</th>
+          <th scope="col">Date</th>
+        </tr>
+      </thead>
+
+    {% for user in users %} 
+      <tbody>
+        <tr>
+          <th scope="row">{{user.unique_id}}</th>
+          <td>{{user.email}}</td>
+          <td>{{user.date}}</td>
+        </tr>
+    {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</section>
+
+{% endblock content%}
