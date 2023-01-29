@@ -10,7 +10,7 @@
 
     <thead>
         <tr>
-          <th scope="col">Unique ID</th>
+          <th scope="col">ID</th>
           <th scope="col">Email</th>
           <th scope="col">Date</th>
         </tr>
@@ -19,7 +19,7 @@
     {% for user in users %} 
       <tbody>
         <tr>
-          <th scope="row">{{user.unique_id}}</th>
+          <th scope="row">{{user.id}}</th>
           <td>{{user.email}}</td>
           <td>{{user.date}}</td>
         </tr>

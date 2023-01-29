@@ -19,14 +19,16 @@
         <header id="header" class="fixed-top">
           <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#">Flask-Login</a>
+              <a class="navbar-brand" href="{{ url_for('home')}}">Flask-Login</a>
               <div class="nav nav-pills">
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{ url_for('login')}}">Login Page</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link btn btn-outline-danger" href="{{ url_for('register')}}">Register</a>
+                    <a class="nav-link btn btn-outline-warning" href="{{ url_for('register')}}">Register</a>
                   </li>
+
+                  {% if current_user.is_authenticated %}
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('users')}}">Users</a>
                   </li>
@@ -36,12 +38,42 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
                   </li>
+                  {% endif %}
                 </ul>
               </div>
             </div>
           </nav>
         </header>
       </div>
+
+      <!--Flash Message -->
+      <section class="container ">
+        <div class="d-flex justify-content-center pt-2 bd-highlight align-items-center">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{category}}" role="alert">
+                  {% if category == 'success'%}
+                    <i class="bi-check-circle-fill"></i>
+                    {{ message }}
+                  {% elif category == 'info' %}
+                    <i class="bi-info-circle-fill"></i>
+                    {{ message }}
+                  {% elif category == 'warning' %}
+                    <i class="bi-exclamation-triangle-fill"></i>
+                    {{ message }}
+                  {% else %}
+                    <i class="bi-exclamation-octagon-fill"></i>
+                    {{ message }}
+                  {% endif %}
+                </div>
+              {%endfor%}
+            {% endif%}
+          {% endwith%}
+        </div>
+      </section>
+      <!--End Flash Message -->
+
 
 
       {% block content %}
