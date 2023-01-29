@@ -21,12 +21,14 @@
             <div class="container-fluid">
               <a class="navbar-brand" href="{{ url_for('home')}}">Flask-Login</a>
               <div class="nav nav-pills">
+                  {% if not current_user.is_authenticated %}
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{ url_for('login')}}">Login Page</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link btn btn-outline-warning" href="{{ url_for('register')}}">Register</a>
                   </li>
+                  {% endif %}
 
                   {% if current_user.is_authenticated %}
                   <li class="nav-item">
