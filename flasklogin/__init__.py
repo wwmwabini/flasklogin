@@ -18,7 +18,7 @@ app.config["JWT_SECRET_KEY"] = os.environ.get("SECRET_KEY")
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=1)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=1)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////tmp/flasklogin.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.environ.get("USER_HOME_DIR") + "/flasklogin.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['MAIL_SERVER'] = os.environ.get("MAIL_SERVER")
