@@ -1,4 +1,4 @@
-import requests
+import requests, os
 
 from flasklogin import app, bcrypt, db, login_manager, jwt
 from flask import redirect, render_template, url_for, request, flash
@@ -7,11 +7,10 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 
 
 
-from flasklogin.forms import LoginForm, RegisterForm, ForgotPasswordForm, ResetPasswordForm
+from flasklogin.forms import LoginForm, RegisterForm, ForgotPasswordForm, ResetPasswordForm, ProfileForm
 from flasklogin.models import Users
 from flasklogin.mails import send_password_reset_email
-
-
+from flasklogin.functions import save_picture, remove_old_picture
 
 @app.route("/")
 def home():
@@ -130,7 +129,7 @@ def pwreset():
 			hashedpassword = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 
 			user.password=hashedpassword
-			db.session.add(record)
+			#db.session.add(record)
 			db.session.commit()
 
 			flash("Password updated successfully. You can now login", "success")
@@ -150,5 +149,23 @@ def users():
 @app.route("/me/account", methods=["GET", "POST"])
 @login_required
 def account():
-	return render_template("account.html")
+	form = ProfileForm()
+
+	if form.validate_on_submit():
+
+		if form.profile_picture.data:
+			old_profile_picture_name = current_user.image
+			old_profile_picture_path = os.path.join(app.root_path, 'static/profile_pictures', old_profile_picture_name)
+
+			profile_pic_name = save_picture(form.profile_picture.data)
+			current_user.image = profile_pic_name
+		current_user.email = form.email.data
+		db.session.commit()
+
+		remove_old_picture(old_profile_picture_path)
+
+		flash("Your account has been updated successfully.", 'success')
+		return redirect('account')
+
+	return render_template("account.html", form=form)
 

@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_jwt_extended import JWTManager
 from flask_mail import Mail
+from flask_migrate import Migrate
 
 from datetime import timedelta
 
@@ -36,6 +37,7 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 jwt = JWTManager(app)
+migrate = Migrate(app, db)
 
 @login_manager.unauthorized_handler
 def unauthorized():

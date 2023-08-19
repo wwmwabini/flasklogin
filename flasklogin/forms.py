@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+from flask_wtf.file import FileField, FileAllowed
+from flask_login import current_user
 
 from flasklogin.models import Users
 
@@ -69,3 +71,15 @@ class ResetPasswordForm(FlaskForm):
 				raise ValidationError("Password must be at least 10 characters long and contain lowercase, uppercase and digit characters.")
 		else:
 			raise ValidationError("Password must be at least 10 characters long and contain lowercase, uppercase and digit characters.")
+
+
+class ProfileForm(FlaskForm):
+	email = EmailField("Email Address", validators=[DataRequired(), Length(min=3, max=500)])
+	profile_picture = FileField("Update profile picture", validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+	submit = SubmitField("Update")
+
+	def validate_email(form, email):
+		if form.email.data != current_user.email:
+			emailaddress = Users.query.filter_by(email=email.data).first()
+			if emailaddress:
+				raise ValidationError("Email already in use. Please select a diffrent email.")
