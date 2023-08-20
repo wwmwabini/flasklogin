@@ -1,0 +1,96 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<section>
+    <div class="container-md mt-5 pt-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+      <div class="d-flex flex-row align-items-center">
+        <h4 class="text-uppercase mt-1">BackendPay</h4>
+        <span class="ms-2 me-3">Payment</span>
+      </div>
+      <a href="{{ url_for('home')}}">Cancel and return to the home page</a>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-7 col-lg-7 col-xl-6 mb-4 mb-md-0">
+        <h5 class="mb-0 text-danger">KES 2500</h5>
+        <h5 class="mb-3">Silver Plan</h5>
+        <div>
+
+          <div class="p-2 d-flex justify-content-between align-items-center" style="background-color: #eee;">
+            <span>Aetna - Open Access</span>
+            <span>Aetna - OAP</span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex flex-row mt-1">
+              <h6>Total to Pay</h6>
+              <h6 class="fw-bold text-danger ms-1">KES 2500</h6>
+            </div>
+          </div>
+          <p>
+            All payments are subject to our Terms and Conditions. Thank you for renewing your subscription.
+          </p>
+          <form action="" method="POST">
+            <div class="d-flex flex-column mb-3">
+                <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+                    <input type="radio" class="btn-check" name="payment_options" id="mpesa" value="mpesa" autocomplete="off" checked/>
+                    <label class="btn btn-outline-primary btn-lg" for="mpesa">
+                    <div class="d-flex justify-content-between">
+                        <span>MPESA </span>
+                        <img src="{{ url_for('static', filename='payments/mpesa.jpeg')}}" alt="mpesa_payment" style="width: 50px; height: 30px;">
+                    </div>
+                    </label>
+        
+                    <input type="radio" class="btn-check" name="payment_options" id="card" value="card" autocomplete="off" />
+                    <label class="btn btn-outline-primary btn-lg" for="card">
+                    <div class="d-flex justify-content-between">
+                        <span>CARD </span>
+                        <img src="{{ url_for('static', filename='payments/card.png')}}" alt="card_payment" style="width: 50px; height: 30px;">
+                    </div>
+                    </label>
+                </div>
+            </div>
+
+            <input type="hidden" id="amount" name="amount" value="2500">
+            
+            <div class="d-flex flex-column mb-3">
+                    <input class="btn btn-danger btn-lg btn-block" type="submit" value="Proceed to payment">
+              </div>
+          </form>
+
+        </div>
+      </div>
+      <div class="col-md-5 col-lg-4 col-xl-4 offset-lg-1 offset-xl-2">
+        <div class="p-3" style="background-color: #eee;">
+          <span class="fw-bold">Order Summary</span>
+          <div class="d-flex justify-content-between mt-2">
+            <span>Package Price</span> <span>KES 1500</span>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <span>50MBps Dedicated B/W</span> <span>KES 700</span>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <span>1 Dedicated IPv4</span> <span>KES 300</span>
+          </div>
+          
+          <hr />
+          <div class="d-flex justify-content-between mt-2">
+            <span class="lh-sm">Discount</span>
+            <span>KES 0</span>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <span class="lh-sm">Applicable Taxes</span>
+            <span>KES 0</span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between mt-2">
+            <span>Total </span> <span class="text-danger">KES 2500</span>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  </section>
+{% endblock content %}

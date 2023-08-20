@@ -7,12 +7,19 @@ from flask_login import LoginManager
 from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 from flask_migrate import Migrate
+from intasend import APIService
 
 from datetime import timedelta
 
 load_dotenv()
 
 app = Flask(__name__)
+
+#prevent user from using the Back button in browsers to return to session pages after logout
+@app.after_request
+def add_header(response):
+    response.cache_control.no_store = True
+    return response
 
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 app.config["JWT_SECRET_KEY"] = os.environ.get("SECRET_KEY")
@@ -38,6 +45,7 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 jwt = JWTManager(app)
 migrate = Migrate(app, db)
+intasend = APIService(token=os.environ.get("INTASEND_API_KEY"), publishable_key=os.environ.get("INTASEND_PUBLISHABLE_KEY"), test=True)
 
 @login_manager.unauthorized_handler
 def unauthorized():

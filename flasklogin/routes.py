@@ -1,6 +1,6 @@
 import requests, os
 
-from flasklogin import app, bcrypt, db, login_manager, jwt
+from flasklogin import app, bcrypt, db, login_manager, jwt, intasend
 from flask import redirect, render_template, url_for, request, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
@@ -146,7 +146,7 @@ def users():
 	return render_template("users.html", users=users)
 
 
-@app.route("/me/account", methods=["GET", "POST"])
+@app.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
 	form = ProfileForm()
@@ -162,10 +162,51 @@ def account():
 		current_user.email = form.email.data
 		db.session.commit()
 
-		remove_old_picture(old_profile_picture_path)
+		if form.profile_picture.data and old_profile_picture_name != 'default.png':
+			remove_old_picture(old_profile_picture_path)
 
 		flash("Your account has been updated successfully.", 'success')
 		return redirect('account')
 
 	return render_template("account.html", form=form)
+
+
+@app.route('/simplepay', methods=['GET', 'POST'])
+@login_required
+def simplepay():
+	return render_template("simplepay.html")
+
+
+@app.route('/backendpay', methods=['GET', 'POST'])
+@login_required
+def backendpay():
+
+	if request.method == "POST":
+		payment_option = request.form.get('payment_options')
+		response = intasend.payment_links.create(title='Payment Link', 
+					   currency="KES",
+					   api_ref="5879",
+					   amount=10, 
+					   redirect_url="http://127.0.0.1:5027/backendpay",
+					   first_name = "Wallace",
+					   last_name = "Mwabini",
+					   email = current_user.email,
+					   card_tarrif = "CUSTOMER-PAYS",
+					   mobile_tarrif = "CUSTOMER-PAYS"
+					   )
+		print(response)
+
+		payment_url = os.get.environ('INTASEND_ENDPOINT') + response['url']
+		print(payment_url)
+
+		return redirect(payment_url)
+
+		"""
+		Sample response
+
+		{'id': '3a4a7453-edcd-4a3c-9931-fc1018abda72', 'title': 'Payment Link', 'is_active': True, 'redirect_url': None, 'amount': 10, 'usage_limit': 0, 'qrcode_file': 'https://intasend-staging.s3.amazonaws.com/qrcodes/3a4a7453-edcd-4a3c-9931-fc1018abda72-aceca8df-4424-4645-a74d-d57ac86fffc7.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA5PEU6MDIXYQ5527D%2F20230820%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20230820T125129Z&X-Amz-Expires=600&X-Amz-SignedHeaders=host&X-Amz-Signature=2d1c8f3b5cdd3fa94f2a0125cd185100258bd7475c06c714a66add9e5752075b', 'url': '/pay/3a4a7453-edcd-4a3c-9931-fc1018abda72/', 'currency': 'KES', 'mobile_tarrif': 'BUSINESS-PAYS', 'card_tarrif': 'BUSINESS-PAYS', 'created_at': '2023-08-20T15:51:28.701298+03:00', 'updated_at': '2023-08-20T15:51:29.904622+03:00'}
+
+		"""
+	
+	return render_template("backendpay.html")
 

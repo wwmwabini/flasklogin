@@ -9,6 +9,7 @@
       <title>Flask-Login</title>
     {% endif %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://unpkg.com/intasend-inlinejs-sdk@3.0.4/build/intasend-inline.js"></script>
   </head>
 
   <body>
@@ -36,6 +37,12 @@
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('account')}}">Account</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('simplepay')}}">SimplePay</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('backendpay')}}">BackendPay</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
@@ -83,5 +90,15 @@
       {% endblock content %}
 
     </section>
+
+    <script>
+      new window.IntaSend({
+    publicAPIKey: "ISPubKey_test_9c66d8dc-6975-4139-a41a-92c4c582768d",
+    live: false //set to true when going live
+      })
+      .on("COMPLETE", (results) => console.log("Do something on success", results))
+      .on("FAILED", (results) => console.log("Do something on failure", results))
+      .on("IN-PROGRESS", (results) => console.log("Payment in progress status", results))
+    </script>
     </body>
 </html>
