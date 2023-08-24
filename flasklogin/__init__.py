@@ -20,6 +20,7 @@ app = Flask(__name__)
 def add_header(response):
     response.cache_control.no_store = True
     return response
+app.config['MAX_CONTENT_LENGTH'] = 8 * 1000 * 1000
 
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 app.config["JWT_SECRET_KEY"] = os.environ.get("SECRET_KEY")

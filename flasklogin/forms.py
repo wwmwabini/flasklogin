@@ -75,7 +75,7 @@ class ResetPasswordForm(FlaskForm):
 
 class ProfileForm(FlaskForm):
 	email = EmailField("Email Address", validators=[DataRequired(), Length(min=3, max=500)])
-	profile_picture = FileField("Update profile picture", validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+	profile_picture = FileField("Update profile picture", validators=[FileAllowed(['jpg', 'png', 'jpeg', 'svg'])])
 	submit = SubmitField("Update")
 
 	def validate_email(form, email):

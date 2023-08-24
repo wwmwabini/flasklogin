@@ -94,6 +94,7 @@
     <script>
       new window.IntaSend({
     publicAPIKey: "ISPubKey_test_9c66d8dc-6975-4139-a41a-92c4c582768d",
+    redirectURL: "http://127.0.0.1:5027/simplepay",
     live: false //set to true when going live
       })
       .on("COMPLETE", (results) => console.log("Do something on success", results))
