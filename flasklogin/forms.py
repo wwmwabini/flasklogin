@@ -19,11 +19,13 @@ class RegisterForm(FlaskForm):
 	confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 	submit = SubmitField("Register")
 
+	@staticmethod
 	def validate_email(form, email):
 		emailaddress = Users.query.filter_by(email=email.data).first()
 		if emailaddress:
 			raise ValidationError("Email already in use. Please select a diffrent email.")
 
+	@staticmethod
 	def validate_password(form, password):
 		digits, uppercase, lowercase = 0, 0, 0
 
@@ -45,6 +47,7 @@ class ForgotPasswordForm(FlaskForm):
 	email = EmailField("Email Address", validators=[DataRequired(), Length(min=3, max=500)])
 	submit = SubmitField("Reset Password")
 
+	@staticmethod
 	def validate_email(form, email):
 		emailaddress = Users.query.filter_by(email=email.data).first()
 		if not emailaddress:
@@ -55,6 +58,7 @@ class ResetPasswordForm(FlaskForm):
 	confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 	submit = SubmitField("Reset")
 
+	@staticmethod
 	def validate_password(form, password):
 		digits, uppercase, lowercase = 0, 0, 0
 
